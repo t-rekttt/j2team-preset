@@ -6,6 +6,8 @@ var preset = JSON.parse(fs.readFileSync('preset-table.json'));
 
 var app = express();
 
+var port = process.env.PORT || 3000;
+
 // app.use(bodyParser.urlencoded({extended: true}));
 // app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.text({type: '*/*'}));
@@ -38,6 +40,6 @@ app.post("/", (req, res) => {
 	}
 });
 
-app.listen(3000, () => {
-	console.log("Listening on port 3000");
+app.listen(port, () => {
+	console.log("Listening on port "+port);
 });
