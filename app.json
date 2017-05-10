@@ -1,0 +1,6 @@
+{
+  "name": "j2team-preset",
+  "description": "A NodeJS server app for replacing Facebook's default color presets",
+  "repository": "https://github.com/t-rekttt/j2team-preset/tree/master",
+  "keywords": ["node", "express", "static"]
+}
