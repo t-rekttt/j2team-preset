@@ -12,6 +12,11 @@ var port = process.env.PORT || 3000;
 // app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.text({type: '*/*'}));
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.post("/", (req, res) => {
 	try {
 		if (req.body) {
