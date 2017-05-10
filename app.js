@@ -40,6 +40,10 @@ app.post("/", (req, res) => {
 	}
 });
 
+app.get("/", (req, res) => {
+	res.send("It works<br>Made by T-Rekt of J2TeaM");
+});
+
 app.listen(port, () => {
 	console.log("Listening on port "+port);
 });
