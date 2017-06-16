@@ -6,12 +6,13 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "forever": "^0.15.3",
     "request": "^2.81.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "start": "./node_modules/.bin/forever app.js"
   },
   "author": "T-Rekt",
   "license": "ISC"
