@@ -38,8 +38,6 @@ app.post("/", (req, res) => {
 					strictSSL: false,
 				}
 
-				console.log(options);
-				
 				request(options, (err, resp, body) => {
 					if (err) {
 						res.send({});
