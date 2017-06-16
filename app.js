@@ -21,31 +21,45 @@ app.post("/", (req, res) => {
 	try {
 		if (req.body) {
 			console.log("New connection on "+Date.now());
-			request({
-				url: 'https://www.facebook.com/react_composer/feedx_sprouts/bootload/?composer_id=rc.u_0_r&target_id=1&composer_type=feedx_sprouts&friend_list_id=&dpr=1',
-				method: 'POST',
-				headers: {
-					'User-Agent': req.headers['user-agent'],
-					'Cookie': req.headers['cookie']
-				},
-				body: req.body,
-				strictSSL: false,
-			}, (err, resp, body) => {
-				if (err) {
-					res.send({});
+			let user = /=([0-9]+)&/.exec(req.body);
+			if (user) 
+			{
+				user = user[1];
+				let options = {
+					url: `https://www.facebook.com/react_composer/feedx_sprouts/bootload/?composer_id=rc.u_0_r&target_id=${user}&composer_type=feedx_sprouts&friend_list_id=&dpr=1`,
+					method: 'POST',
+					headers: {
+						'User-Agent': req.headers['user-agent'],
+						'Cookie': req.headers['cookie'],
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					// proxy: "http://localhost:8888",
+					body: req.body,
+					strictSSL: false,
 				}
-				else {
-					let json = JSON.parse(body.substr(9));
-					if (json.jsmods) {
-						json.jsmods.require[0][3][1].config.taggersConfig.FORMATTED_TEXT.textFormats=preset;
-						res.send("for (;;);"+JSON.stringify(json));
+
+				console.log(options);
+				
+				request(options, (err, resp, body) => {
+					if (err) {
+						res.send({});
 					}
 					else {
-						res.send("Error");
+						let json = JSON.parse(body.substr(9));
+						if (json.jsmods) {
+							json.jsmods.require[0][3][1].config.taggersConfig.FORMATTED_TEXT.textFormats=preset;
+							res.send("for (;;);"+JSON.stringify(json));
+						}
+						else {
+							res.send("Error");
+						}
+						// res.send(body);
 					}
-					// res.send(body);
-				}
-			});
+				});
+			}
+			else {
+				res.send("Error");
+			}
 		}
 	} catch (e) {
 		console.log(e);
