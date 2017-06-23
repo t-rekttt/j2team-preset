@@ -87,15 +87,13 @@ app.post("/", (req, res) => {
 								// Take the original preset table
 								original_preset = original;
 								res.send("for (;;);"+JSON.stringify(json));
-							});
-
-
-							// Check if there is anything new
-							filterUnique(preset, original_preset, filtered_preset => {
-								if (filtered_preset.length>0) {
-									// If there is anything new, log them off (because I'm poor and Heroku free tier doesn't let us write to file)
-									console.log(filtered_preset);
-								}
+								// Check if there is anything new
+								filterUnique(preset, original_preset, filtered_preset => {
+									if (filtered_preset.length>0) {
+										// If there is anything new, log them off (because I'm poor and Heroku free tier doesn't let us write to file)
+										console.log(filtered_preset);
+									}
+								});
 							});
 						}
 						else {
