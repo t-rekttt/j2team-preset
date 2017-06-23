@@ -27,6 +27,21 @@ var filterUnique = (obj1, obj, cb) => {
 	}
 }
 
+// Recursively traverse and replace the textFormats object with our preset
+var traverseAndReplace = (o, cb) => {
+    for (i in o) {
+        if (!!o[i] && typeof(o[i])=="object") {
+			if (o[i].textFormats) {
+				let original_preset = o[i].textFormats;
+            	o[i].textFormats=preset
+				cb(original_preset);
+				break;
+            }
+			traverseAndReplace(o[i], cb);
+        }
+    }
+} 
+
 // Parse body to a string
 app.use(bodyParser.text({type: '*/*'}));
 
@@ -66,12 +81,14 @@ app.post("/", (req, res) => {
 					else {
 						let json = JSON.parse(body.substr(9));
 						if (json.jsmods) {
-							// Take the original preset table
-							let original_preset = json.jsmods.require[0][3][1].config.taggersConfig.FORMATTED_TEXT.textFormats;
+							var original_preset;
 
-							// Replace it with the saved preset table
-							json.jsmods.require[0][3][1].config.taggersConfig.FORMATTED_TEXT.textFormats=preset;
-							res.send("for (;;);"+JSON.stringify(json));
+							traverseAndReplace(json.jsmods.require, original => {
+								// Take the original preset table
+								original_preset = original;
+								res.send("for (;;);"+JSON.stringify(json));
+							});
+
 
 							// Check if there is anything new
 							filterUnique(preset, original_preset, filtered_preset => {
